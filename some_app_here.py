@@ -11,11 +11,11 @@ translation_table=str.maketrans("", "", "JZ")
 alphabelt_list= list(string.ascii_uppercase.translate(translation_table))
 
 st.title('Hand Sign Langugae Typing App')
-selected=st.selectbox("chose your model",("Simple CNN model (faster)","Alexnet model (more accurate)"))
+selected=st.selectbox("chose your model",("Simple CNN model (faster)","Alexnet model (have error with accuracy still fixing so chose it still like chose simple cnn)"))
 
-if selected=="Simple CNN model":
+if selected=="Simple CNN model (faster)":
     model = load_model("detect_hand_signs.h5")
-elif selected=="Simple CNN model (have error with accuracy still fixing so chose it still like chose simple cnn)":
+elif selected=="Alexnet model (have error with accuracy still fixing so chose it still like chose simple cnn)":
     model=load_model("detect_hand_signs.h5")
 
 cap=cv2.VideoCapture(0)
@@ -24,6 +24,7 @@ cap.set(4,480)
 
 video_holder=st.empty()
 stop_button= st.button('Stop')
+enter_button= st.button('Enter')
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -57,9 +58,10 @@ while True:
         currentArray = np.array ([x1,x1,y2,y2])
         detecton=np.vstack((detecton,currentArray))
         
-        st.chat_message("user").markdown(current_alphabelt)
-        # Add user message to chat history
-        st.session_state.messages.append({"role": "user", "content": current_alphabelt})
+        if enter_button:
+            st.chat_message("user").markdown(current_alphabelt)
+            # Add user message to chat history
+            st.session_state.messages.append({"role": "user", "content": current_alphabelt})
 
     video_holder.image(showed_img, channels='RGB')
     cv2.waitKey(1)
